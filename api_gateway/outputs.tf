@@ -20,5 +20,5 @@ output "api_gateway_id" {
 # Exportar el ARN de la etapa (prod)
 output "api_gateway_stage_arn" {
   description = "ARN de la etapa 'prod' del API Gateway en formato válido para WAF."
-  value       = "arn:aws:execute-api:${var.region}:${data.aws_caller_identity.current.account_id}:${aws_apigatewayv2_api.http_api.id}/${aws_apigatewayv2_stage.prod_stage.name}"
+  value       = "arn:aws:apigateway:${var.region}::/apis/${aws_apigatewayv2_api.http_api.id}/stages/${aws_apigatewayv2_stage.prod_stage.name}"
 }
