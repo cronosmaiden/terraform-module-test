@@ -67,14 +67,14 @@ module "api_gateway" {
 ############################
 
 module "waf" {
-  source = "./waf" # Ruta relativa al módulo WAF
+  source = "./waf"
 
   waf_name        = var.waf_name
   waf_description = var.waf_description
   rate_limit      = var.rate_limit
-
-  waf_rules = var.waf_rules
-  resource_arn = module.api_gateway.api_gateway_id
+  waf_rules       = var.waf_rules
   region          = var.region
   api_gateway_id  = module.api_gateway.api_gateway_id
+  resource_arn = module.api_gateway.api_gateway_stage_arn
+  api_gateway_dependency = [module.api_gateway]
 }

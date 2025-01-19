@@ -63,8 +63,16 @@ variable "api_gateway_id" {
 # Asociar al API Gateway
 ############################
 
+# Variable para recibir el ARN del API Gateway
 variable "resource_arn" {
-  description = "ARN del recurso al que se asociará el WAF (por ejemplo, un API Gateway)."
+  description = "ARN del API Gateway al que se asociará el WAF"
   type        = string
+}
+
+# Variable para manejar dependencias explícitas desde el módulo raíz
+variable "api_gateway_dependency" {
+  description = "Dependencia explícita para esperar la creación del API Gateway y su stage"
+  default     = [] # Valor por defecto vacío
+  type        = list(any)
 }
 

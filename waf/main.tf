@@ -70,9 +70,21 @@ resource "aws_wafv2_web_acl" "this" {
 # AWS WAF - Asociar al API Gateway
 ############################
 
+resource "null_resource" "wait_for_stage" {
+  # Cambia la referencia a una dependencia explícita pasada como input desde el módulo raíz
+  depends_on = [
+    var.api_gateway_dependency
+  ]
+
+  provisioner "local-exec" {
+    command = "sleep 30" # Esperar 30 segundos
+  }
+}
+
 resource "aws_wafv2_web_acl_association" "this" {
   depends_on = [
-    aws_wafv2_web_acl.this
+    aws_wafv2_web_acl.this,
+    null_resource.wait_for_stage
   ]
 
   resource_arn = var.resource_arn
