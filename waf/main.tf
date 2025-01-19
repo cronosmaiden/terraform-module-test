@@ -75,6 +75,6 @@ resource "aws_wafv2_web_acl_association" "this" {
     aws_wafv2_web_acl.this
   ]
 
-  resource_arn = "arn:aws:execute-api:${var.region}:${data.aws_caller_identity.current.account_id}:${var.api_gateway_id}/prod"
+  resource_arn = var.resource_arn
   web_acl_arn  = aws_wafv2_web_acl.this.arn
 }
