@@ -1,4 +1,10 @@
 ############################
+# AWS WAF - Obtener información de la cuenta actual
+############################
+
+data "aws_caller_identity" "current" {}
+
+############################
 # AWS WAF - Web ACL
 ############################
 
@@ -65,7 +71,10 @@ resource "aws_wafv2_web_acl" "this" {
 ############################
 
 resource "aws_wafv2_web_acl_association" "this" {
-  depends_on = [aws_wafv2_web_acl.this]
-  resource_arn = "arn:aws:apigateway:${var.region}::/restapis/${var.api_gateway_id}/stages/prod"
+  depends_on = [
+    aws_wafv2_web_acl.this,
+    module.api_gateway.aws_apigatewayv2_stage.prod_stage
+  ]
+  resource_arn = "arn:aws:execute-api:${var.region}:${data.aws_caller_identity.current.account_id}:${var.api_gateway_id}/prod"
   web_acl_arn  = aws_wafv2_web_acl.this.arn
 }

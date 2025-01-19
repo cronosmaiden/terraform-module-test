@@ -14,6 +14,12 @@ resource "aws_apigatewayv2_api" "http_api" {
   tags = var.apigateway_http_tags
 }
 
+resource "aws_apigatewayv2_stage" "prod_stage" {
+  api_id = aws_apigatewayv2_api.http_api.id
+  name   = "prod"
+  auto_deploy = true
+}
+
 ############################
 # Autorizador Cognito
 ############################
