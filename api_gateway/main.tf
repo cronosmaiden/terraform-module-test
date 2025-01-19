@@ -2,6 +2,9 @@
 # API Gateway HTTP (v2)
 ############################
 
+# Obtener información de la cuenta actual
+data "aws_caller_identity" "current" {}
+
 # Crear la API Gateway HTTP
 resource "aws_apigatewayv2_api" "http_api" {
   name          = var.apigateway_http_name
@@ -73,9 +76,11 @@ resource "aws_apigatewayv2_route" "default_route" {
 # Configurar WAF (Asociación)
 ############################
 
-# Asociar un WAF a la API Gateway
+# Asociar un WAF al API Gateway
 resource "aws_wafv2_web_acl_association" "waf_association" {
-  depends_on = [aws_apigatewayv2_api.http_api]
-  resource_arn = aws_apigatewayv2_api.http_api.execution_arn
+  depends_on = [aws_apigatewayv2_stage.prod_stage]
+
+  # Se usa el ARN de ejecución del API Gateway para incluir la etapa correcta
+  resource_arn = "arn:aws:execute-api:${var.region}:${data.aws_caller_identity.current.account_id}:${aws_apigatewayv2_api.http_api.id}/${aws_apigatewayv2_stage.prod_stage.name}"
   web_acl_arn  = var.waf_arn
 }
