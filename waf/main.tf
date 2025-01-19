@@ -66,6 +66,6 @@ resource "aws_wafv2_web_acl" "this" {
 
 resource "aws_wafv2_web_acl_association" "this" {
   depends_on = [aws_wafv2_web_acl.this]
-  resource_arn = var.resource_arn # ARN del API Gateway
+  resource_arn = "arn:aws:apigateway:${var.region}::/restapis/${var.api_gateway_id}/stages/prod"
   web_acl_arn  = aws_wafv2_web_acl.this.arn
 }

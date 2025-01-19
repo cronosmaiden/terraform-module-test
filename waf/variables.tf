@@ -49,6 +49,16 @@ variable "rate_limit" {
   default     = 2000
 }
 
+variable "region" {
+  description = "Región donde se despliegan los recursos."
+  type        = string
+}
+
+variable "api_gateway_id" {
+  description = "ID del API Gateway para asociarlo con el WAF."
+  type        = string
+}
+
 ############################
 # Asociar al API Gateway
 ############################
@@ -57,3 +67,4 @@ variable "resource_arn" {
   description = "ARN del recurso al que se asociará el WAF (por ejemplo, un API Gateway)."
   type        = string
 }
+
