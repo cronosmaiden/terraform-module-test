@@ -81,6 +81,6 @@ resource "aws_wafv2_web_acl_association" "waf_association" {
   depends_on = [aws_apigatewayv2_stage.prod_stage]
 
   # Se usa el ARN de ejecución del API Gateway para incluir la etapa correcta
-  resource_arn = "arn:aws:execute-api:${var.region}:${data.aws_caller_identity.current.account_id}:${aws_apigatewayv2_api.http_api.id}/${aws_apigatewayv2_stage.prod_stage.name}"
+  resource_arn = "arn:aws:apigateway:${var.region}::/apis/${aws_apigatewayv2_api.http_api.id}"
   web_acl_arn  = var.waf_arn
 }
