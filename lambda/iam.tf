@@ -18,6 +18,10 @@ resource "aws_iam_role" "lambda_execution_role" {
       }
     ]
   })
+
+  lifecycle {
+    ignore_changes = [name]
+  }
 }
 
 # Adjuntar la política básica de ejecución para Lambda
