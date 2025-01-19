@@ -3,7 +3,7 @@
 ############################
 
 resource "aws_iam_role" "lambda_execution_role" {
-  name = "lambda-execution-role-new3"
+  name = "lambda-execution-role-new"
 
   # Permitir que Lambda asuma este rol
   assume_role_policy = jsonencode({
