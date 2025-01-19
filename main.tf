@@ -59,6 +59,7 @@ module "api_gateway" {
   lambda_integration_uri         = module.lambda.lambda_arn
   default_route_key              = var.default_route_key
   waf_arn = module.waf.waf_arn
+  region          = var.region
 }
 
 ############################
@@ -74,4 +75,6 @@ module "waf" {
 
   waf_rules = var.waf_rules
   resource_arn = module.api_gateway.api_gateway_id
+  region          = var.region
+  api_gateway_id  = module.api_gateway.api_gateway_id
 }
