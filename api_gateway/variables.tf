@@ -78,3 +78,8 @@ variable "waf_arn" {
   description = "ARN del WAF asociado al API Gateway."
   type        = string
 }
+
+variable "region" {
+  description = "Región donde se desplegarán los recursos del API Gateway."
+  type        = string
+}

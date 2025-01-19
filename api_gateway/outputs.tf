@@ -16,3 +16,9 @@ output "api_gateway_id" {
   description = "ID del API Gateway creado."
   value       = aws_apigatewayv2_api.http_api.id
 }
+
+# Exportar el ARN de la etapa (prod)
+output "api_gateway_stage_arn" {
+  description = "ARN de la etapa 'prod' del API Gateway creado."
+  value       = "arn:aws:apigateway:${var.region}::/restapis/${aws_apigatewayv2_api.http_api.id}/stages/prod"
+}
