@@ -1,48 +1,24 @@
 ############################
-# Variables del API Gateway
+# Variables del API Gateway REST
 ############################
 
-# Nombre y configuración del API Gateway HTTP
-variable "apigateway_http_name" {
-  description = "Nombre del API Gateway HTTP."
+# Nombre y configuración del API Gateway REST
+variable "apigateway_rest_name" {
+  description = "Nombre del API Gateway REST."
   type        = string
+  default     = "my-default-rest-api"
 }
 
-variable "apigateway_http_tags" {
-  description = "Mapa de etiquetas adicionales para el API Gateway HTTP."
+variable "apigateway_rest_description" {
+  description = "Descripción del API Gateway REST."
+  type        = string
+  default     = "API Gateway REST para la integración con Lambda."
+}
+
+variable "apigateway_rest_tags" {
+  description = "Mapa de etiquetas adicionales para el API Gateway REST."
   type        = map(string)
   default     = {}
-}
-
-variable "route_selection_expression" {
-  description = "Expresión de selección de rutas del API Gateway HTTP."
-  type        = string
-  default     = "$request.method $request.path"
-}
-
-############################
-# Variables del Autorizador Cognito
-############################
-
-variable "cognito_authorizer_name" {
-  description = "Nombre del autorizador Cognito."
-  type        = string
-}
-
-variable "cognito_identity_sources" {
-  description = "Fuentes de identidad para el autorizador Cognito."
-  type        = list(string)
-  default     = ["$request.header.Authorization"]
-}
-
-variable "cognito_audience" {
-  description = "Audiencia permitida para los tokens JWT en Cognito."
-  type        = list(string)
-}
-
-variable "cognito_issuer" {
-  description = "URL del emisor de los tokens JWT (Cognito User Pool)."
-  type        = string
 }
 
 ############################
@@ -50,24 +26,24 @@ variable "cognito_issuer" {
 ############################
 
 variable "lambda_integration_uri" {
-  description = "URI de la Lambda para integrarla con el API Gateway."
+  description = "URI de la Lambda para integrarla con el API Gateway REST."
   type        = string
 }
 
-variable "integration_timeout_milliseconds" {
-  description = "Tiempo de espera en milisegundos para la integración Lambda."
-  type        = number
-  default     = 30000
+variable "lambda_integration_http_method" {
+  description = "Método HTTP usado para integrar la Lambda con el API Gateway REST."
+  type        = string
+  default     = "POST"
 }
 
 ############################
 # Variables de Rutas
 ############################
 
-variable "default_route_key" {
-  description = "Clave de la ruta predeterminada del API Gateway."
+variable "default_route_path_part" {
+  description = "Parte del path para el recurso base del API Gateway REST."
   type        = string
-  default     = "ANY /"
+  default     = "default" # Ajusta según sea necesario
 }
 
 ############################
@@ -75,11 +51,11 @@ variable "default_route_key" {
 ############################
 
 variable "waf_arn" {
-  description = "ARN del WAF asociado al API Gateway."
+  description = "ARN del WAF asociado al API Gateway REST."
   type        = string
 }
 
 variable "region" {
-  description = "Región donde se desplegarán los recursos del API Gateway."
+  description = "Región donde se desplegarán los recursos del API Gateway REST."
   type        = string
 }

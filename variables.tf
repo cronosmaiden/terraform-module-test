@@ -72,9 +72,15 @@ variable "lambda_function_environment_variables" {
 # Variables del API Gateway
 ############################
 
-variable "apigateway_http_name" {
-  description = "Nombre del API Gateway HTTP."
+variable "apigateway_rest_name" {
+  description = "Nombre del API Gateway REST."
   type        = string
+}
+
+variable "apigateway_rest_tags" {
+  description = "Mapa de etiquetas adicionales para el API Gateway REST."
+  type        = map(string)
+  default     = {}
 }
 
 variable "cognito_authorizer_name" {

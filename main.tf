@@ -21,45 +21,41 @@ provider "aws" {
 # Módulo Lambda
 ############################
 
-############################
-# Módulo Lambda
-############################
-
 module "lambda" {
   source = "./lambda" # Ruta relativa al módulo Lambda
 
-  lambda_function_name        = var.lambda_function_name
-  lambda_function_role        = var.lambda_function_role
-  lambda_function_runtime     = var.lambda_function_runtime
-  lambda_function_filename    = var.lambda_function_filename
-  lambda_function_handler     = var.lambda_function_handler
-  lambda_function_architecture = var.lambda_function_architecture
-  lambda_function_memory      = var.lambda_function_memory
-  lambda_function_timeout     = var.lambda_function_timeout
-  lambda_function_description = var.lambda_function_description
+  lambda_function_name               = var.lambda_function_name
+  lambda_function_role               = var.lambda_function_role
+  lambda_function_runtime            = var.lambda_function_runtime
+  lambda_function_filename           = var.lambda_function_filename
+  lambda_function_handler            = var.lambda_function_handler
+  lambda_function_architecture       = var.lambda_function_architecture
+  lambda_function_memory             = var.lambda_function_memory
+  lambda_function_timeout            = var.lambda_function_timeout
+  lambda_function_description        = var.lambda_function_description
   lambda_function_environment_variables = var.lambda_function_environment_variables
 
   # Pasar el ARN del API Gateway al módulo Lambda
-  api_gateway_source_arn = module.api_gateway.api_gateway_endpoint
+  api_gateway_source_arn = module.api_gateway.api_gateway_execution_arn
 }
 
-
 ############################
-# Módulo API Gateway
+# Módulo API Gateway REST
 ############################
 
 module "api_gateway" {
-  source = "./api_gateway" # Ruta relativa al módulo API Gateway
+  source = "./api_gateway" # Ruta relativa al módulo API Gateway REST
 
-  apigateway_http_name           = var.apigateway_http_name
-  cognito_authorizer_name        = var.cognito_authorizer_name
-  cognito_identity_sources       = var.cognito_identity_sources
-  cognito_audience               = var.cognito_audience
-  cognito_issuer                 = var.cognito_issuer
-  lambda_integration_uri         = module.lambda.lambda_arn
-  default_route_key              = var.default_route_key
+  # Nombre y configuración del API Gateway REST
+  apigateway_rest_name = var.apigateway_rest_name
+  apigateway_rest_tags = var.apigateway_rest_tags
+
+  # Integración Lambda
+  lambda_integration_uri = module.lambda.lambda_arn
+
+  # Configuración adicional
+  region = var.region
   waf_arn = module.waf.waf_arn
-  region          = var.region
 }
 
 ############################
@@ -74,7 +70,9 @@ module "waf" {
   rate_limit      = var.rate_limit
   waf_rules       = var.waf_rules
   region          = var.region
+
+  # Conexión con el API Gateway REST
   api_gateway_id  = module.api_gateway.api_gateway_id
-  resource_arn = module.api_gateway.api_gateway_stage_arn
+  resource_arn    = module.api_gateway.api_gateway_stage_arn
   api_gateway_dependency = [module.api_gateway]
 }
