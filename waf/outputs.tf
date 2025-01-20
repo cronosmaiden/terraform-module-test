@@ -16,3 +16,8 @@ output "associated_resource_arn" {
   description = "ARN del recurso asociado al WAF (por ejemplo, API Gateway)."
   value       = aws_wafv2_web_acl_association.this.resource_arn
 }
+
+output "waf_association_status" {
+  description = "ID de la asociación del WAF con el API Gateway."
+  value       = aws_wafv2_web_acl_association.this.id
+}
