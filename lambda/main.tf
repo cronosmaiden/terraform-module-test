@@ -1,6 +1,6 @@
 resource "aws_lambda_function" "lambda" {
   function_name                  = var.lambda_function_name
-  role                           = var.lambda_function_role
+  role                           = var.lambda_function_role == null ? aws_iam_role.lambda_execution_role.arn : var.lambda_function_role
   runtime                        = var.lambda_function_runtime
   filename                       = var.lambda_function_filename
   handler                        = var.lambda_function_handler
