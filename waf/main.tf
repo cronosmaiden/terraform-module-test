@@ -70,36 +70,8 @@ resource "aws_wafv2_web_acl" "this" {
 # AWS WAF - Asociar al API Gateway
 ############################
 
-resource "null_resource" "wait_for_stage" {
-  # Depender explícitamente del API Gateway para garantizar orden de ejecución
-  depends_on = [
-    var.api_gateway_dependency
-  ]
-
-  provisioner "local-exec" {
-    # Verificar que el API Gateway esté listo
-    command = <<EOT
-    for i in {1..10}; do
-      echo "Verificando si el API Gateway está listo... (intento $i)"
-      aws apigatewayv2 get-api --api-id "${var.api_gateway_id}" --region "${var.region}" > /dev/null 2>&1
-      if [ $? -eq 0 ]; then
-        echo "API Gateway listo."
-        exit 0
-      fi
-      sleep 10
-    done
-    echo "Error: El API Gateway no está listo después de varios intentos." >&2
-    exit 1
-    EOT
-    interpreter = ["/bin/bash", "-c"]
-  }
-}
-
 resource "aws_wafv2_web_acl_association" "this" {
-  depends_on = [
-    aws_wafv2_web_acl.this,
-    null_resource.wait_for_stage
-  ]
+  depends_on = [aws_wafv2_web_acl.this]
 
   resource_arn = var.resource_arn
   web_acl_arn  = aws_wafv2_web_acl.this.arn

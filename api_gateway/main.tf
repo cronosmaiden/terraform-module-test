@@ -80,6 +80,6 @@ resource "aws_apigatewayv2_route" "default_route" {
 resource "aws_wafv2_web_acl_association" "waf_association" {
   count = var.waf_arn == null ? 0 : 1
 
-  resource_arn = "arn:aws:apigateway:${var.region}::/restapis/${aws_apigatewayv2_api.http_api.id}/stages/${aws_apigatewayv2_stage.prod_stage.name}"
+  resource_arn = "arn:aws:apigateway:${var.region}::/apis/${aws_apigatewayv2_api.http_api.id}/stages/${aws_apigatewayv2_stage.prod_stage.name}"
   web_acl_arn  = var.waf_arn
 }
