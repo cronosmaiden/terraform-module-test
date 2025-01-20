@@ -71,13 +71,27 @@ resource "aws_wafv2_web_acl" "this" {
 ############################
 
 resource "null_resource" "wait_for_stage" {
-  # Cambia la referencia a una dependencia explícita pasada como input desde el módulo raíz
+  # Depender explícitamente del API Gateway para garantizar orden de ejecución
   depends_on = [
     var.api_gateway_dependency
   ]
 
   provisioner "local-exec" {
-    command = "sleep 30" # Esperar 30 segundos
+    # Verificar que el API Gateway esté listo
+    command = <<EOT
+    for i in {1..10}; do
+      echo "Verificando si el API Gateway está listo... (intento $i)"
+      aws apigatewayv2 get-api --api-id "${var.api_gateway_id}" --region "${var.region}" > /dev/null 2>&1
+      if [ $? -eq 0 ]; then
+        echo "API Gateway listo."
+        exit 0
+      fi
+      sleep 10
+    done
+    echo "Error: El API Gateway no está listo después de varios intentos." >&2
+    exit 1
+    EOT
+    interpreter = ["/bin/bash", "-c"]
   }
 }
 

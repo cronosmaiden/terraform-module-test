@@ -75,4 +75,3 @@ variable "api_gateway_dependency" {
   default     = [] # Valor por defecto vacío
   type        = list(any)
 }
-
