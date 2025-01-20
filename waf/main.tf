@@ -1,7 +1,4 @@
-############################
 # AWS WAF - Obtener información de la cuenta actual
-############################
-
 data "aws_caller_identity" "current" {}
 
 ############################
@@ -12,7 +9,7 @@ data "aws_caller_identity" "current" {}
 resource "aws_wafv2_web_acl" "this" {
   name        = var.waf_name
   description = var.waf_description
-  scope       = var.waf_scope # REGIONAL para API Gateway
+  scope       = var.waf_scope
   default_action {
     allow {}
   }
@@ -30,7 +27,7 @@ resource "aws_wafv2_web_acl" "this" {
       name     = rule.value.name
       priority = rule.value.priority
       action {
-        block {} # Bloquear por defecto
+        block {}
       }
       statement {
         ip_set_reference_statement {
@@ -48,9 +45,9 @@ resource "aws_wafv2_web_acl" "this" {
   # Regla de Rate Limiting
   rule {
     name     = "rate-limit-rule"
-    priority = 0 # Prioridad más alta
+    priority = 0
     action {
-      block {} # Bloquear solicitudes excesivas
+      block {}
     }
     statement {
       rate_based_statement {

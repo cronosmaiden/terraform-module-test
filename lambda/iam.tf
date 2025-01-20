@@ -24,7 +24,6 @@ resource "aws_iam_role" "lambda_execution_role" {
   }
 }
 
-# Adjuntar la política básica de ejecución para Lambda
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   role       = aws_iam_role.lambda_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"

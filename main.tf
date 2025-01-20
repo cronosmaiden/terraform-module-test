@@ -22,7 +22,7 @@ provider "aws" {
 ############################
 
 module "lambda" {
-  source = "./lambda" # Ruta relativa al módulo Lambda
+  source = "./lambda"
 
   lambda_function_name               = var.lambda_function_name
   lambda_function_role               = var.lambda_function_role
@@ -34,8 +34,6 @@ module "lambda" {
   lambda_function_timeout            = var.lambda_function_timeout
   lambda_function_description        = var.lambda_function_description
   lambda_function_environment_variables = var.lambda_function_environment_variables
-
-  # Pasar el ARN del API Gateway al módulo Lambda
   api_gateway_source_arn = module.api_gateway.api_gateway_execution_arn
 }
 
@@ -44,16 +42,11 @@ module "lambda" {
 ############################
 
 module "api_gateway" {
-  source = "./api_gateway" # Ruta relativa al módulo API Gateway REST
+  source = "./api_gateway"
 
-  # Nombre y configuración del API Gateway REST
   apigateway_rest_name = var.apigateway_rest_name
   apigateway_rest_tags = var.apigateway_rest_tags
-
-  # Integración Lambda
   lambda_integration_uri = module.lambda.lambda_arn
-
-  # Configuración adicional
   region = var.region
   waf_arn = module.waf.waf_arn
 }
@@ -70,8 +63,6 @@ module "waf" {
   rate_limit      = var.rate_limit
   waf_rules       = var.waf_rules
   region          = var.region
-
-  # Conexión con el API Gateway REST
   api_gateway_id  = module.api_gateway.api_gateway_id
   resource_arn    = module.api_gateway.api_gateway_stage_arn
   api_gateway_dependency = [module.api_gateway]

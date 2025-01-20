@@ -72,6 +72,6 @@ variable "resource_arn" {
 # Variable para manejar dependencias explícitas desde el módulo raíz
 variable "api_gateway_dependency" {
   description = "Dependencia explícita para esperar la creación del API Gateway y su stage"
-  default     = [] # Valor por defecto vacío
+  default     = []
   type        = list(any)
 }

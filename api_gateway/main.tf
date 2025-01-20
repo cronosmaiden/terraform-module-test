@@ -18,15 +18,15 @@ resource "aws_api_gateway_rest_api" "rest_api" {
 resource "aws_api_gateway_resource" "root_resource" {
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
   parent_id   = aws_api_gateway_rest_api.rest_api.root_resource_id
-  path_part   = var.default_route_path_part # Por ejemplo, "my-resource"
+  path_part   = var.default_route_path_part
 }
 
 # Integración Lambda
 resource "aws_api_gateway_method" "lambda_method" {
   rest_api_id   = aws_api_gateway_rest_api.rest_api.id
   resource_id   = aws_api_gateway_resource.root_resource.id
-  http_method   = var.lambda_integration_http_method # Por ejemplo, "POST"
-  authorization = "NONE" # Cambiar si necesitas autenticación
+  http_method   = var.lambda_integration_http_method
+  authorization = "NONE"
 }
 
 resource "aws_api_gateway_integration" "lambda_integration" {
@@ -60,7 +60,6 @@ resource "aws_api_gateway_stage" "prod_stage" {
 # Asociar un WAF al API Gateway REST
 resource "aws_wafv2_web_acl_association" "waf_association" {
   
-  # Usar el ARN del stage creado explícitamente
   resource_arn = aws_api_gateway_stage.prod_stage.arn
   web_acl_arn  = var.waf_arn
 }

@@ -43,7 +43,7 @@ variable "lambda_integration_http_method" {
 variable "default_route_path_part" {
   description = "Parte del path para el recurso base del API Gateway REST."
   type        = string
-  default     = "default" # Ajusta según sea necesario
+  default     = "default"
 }
 
 ############################
